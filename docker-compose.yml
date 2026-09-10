@@ -1,0 +1,13 @@
+services:
+  super-heroes:
+
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    
+    container_name: super-heroes-app
+    
+    ports:
+      - "8080:80"
+      
+    restart: unless-stopped
