@@ -7,23 +7,23 @@ import { SUPER_HEROS_LIST } from './super-heros.list';
 })
 export class SuperHeros {
   private _superHeros: WritableSignal<readonly Hero[]> = signal(SUPER_HEROS_LIST);
-  private _searchTerm: WritableSignal<string> = signal('');
+  private _searchName: WritableSignal<string> = signal('');
 
   public superHeros: Signal<readonly Hero[]> = this._superHeros.asReadonly();
+
+  public superHerosFiltered = computed(() => { 
+    return this.superHeros().filter((hero: Hero) => 
+      hero.name.toLowerCase().includes(this._searchName().toLowerCase())
+    ); 
+  });
 
   public getSuperHeroById(id: Hero['id']): Hero | undefined { 
     return this.superHeros().find((hero: Hero) => hero.id === id); 
   };
 
   public searchSuperHerosByName(searchTerm: string): void {
-    this._searchTerm.set(searchTerm);
+    this._searchName.set(searchTerm);
   };
-
-  public superHerosFiltered = computed(() => { 
-    return this.superHeros().filter((hero: Hero) => 
-      hero.name.toLowerCase().includes(this._searchTerm().toLowerCase())
-    ); 
-  });
 
   public addSuperHero(hero: Hero): void { 
     const existingHero = this.superHeros().filter((h: Hero) => h.name.toLowerCase() === hero.name.toLowerCase());
