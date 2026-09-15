@@ -6,6 +6,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-heroslist',
@@ -15,7 +16,8 @@ import { MatIconModule } from '@angular/material/icon';
      MatSortModule, 
      MatMenuModule, 
      MatButtonModule, 
-     MatIconModule
+     MatIconModule,
+     MatCardModule
   ],
   templateUrl: './heroslist.html',
   styleUrl: './heroslist.scss',
