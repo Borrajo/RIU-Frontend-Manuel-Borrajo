@@ -27,6 +27,11 @@ describe('SuperHeros', () => {
       .toThrow('Hero with name "Thor" already exists.');
   });
 
+  it('should throw an error when adding a hero with an empty name', () => {
+    expect(() => service.addSuperHero(''))
+      .toThrow('Hero name cannot be empty.');
+  });
+
   it('should remove an existing hero', () => {
     const hero: Hero = { id: '3e2504e0-4f89-11d3-9a0c-0305e82c3301', name: 'Hulk' };
     const heroCount = service.superHeros().length;
@@ -66,4 +71,18 @@ describe('SuperHeros', () => {
 
     expect(service.superHerosFiltered()).toEqual([]);
   });
+
+  it('should return a hero by ID', () => {
+    const expectedHeroId = 'c4a53232-15f2-4e8a-a681-7090b34336c2';
+    const hero = service.getSuperHeroById(expectedHeroId);
+
+    expect(hero?.id).toBe(expectedHeroId);
+  });
+
+  it('should return undefined for a non-existing hero ID', () => {
+    const hero = service.getSuperHeroById('non-existing-id');
+
+    expect(hero).toBeUndefined();
+  }); 
+
 });
