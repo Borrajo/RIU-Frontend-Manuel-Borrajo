@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { SuperHeros } from './super-heros';
+import { Hero } from '../interfaces/hero.interface';
 
 describe('SuperHeros', () => {
   let service: SuperHeros;
@@ -11,40 +12,41 @@ describe('SuperHeros', () => {
   });
 
   it('should add a new hero when called with a non-existing hero', () => {
-    const hero = { id: '1', name: 'Superman' };
+    const hero: Hero['name'] =  'Superman' ;
 
     service.addSuperHero(hero);
+    service.searchSuperHerosByName(hero);
     
-    expect(service.getSuperHeroById('1')).toEqual(hero);
+    expect(service.superHerosFiltered()[0].name).toEqual(hero);
   });
 
   it('should throw an error when adding a hero with an existing name', () => {
-    const hero = { id: '1', name: 'Thor' };
+    const hero: Hero = { id: '1', name: 'Thor' };
 
-    expect(() => service.addSuperHero({ id: '2', name: 'Thor' }))
+    expect(() => service.addSuperHero('Thor'))
       .toThrow('Hero with name "Thor" already exists.');
   });
 
   it('should remove an existing hero', () => {
-    const hero = { id: '3e2504e0-4f89-11d3-9a0c-0305e82c3301', name: 'Hulk' };
+    const hero: Hero = { id: '3e2504e0-4f89-11d3-9a0c-0305e82c3301', name: 'Hulk' };
     const heroCount = service.superHeros().length;
 
-    service.removeSuperHero(hero);
+    service.removeSuperHero(hero.id); 
 
     expect(service.superHeros().length).toBe(heroCount - 1);
   });
 
   it('should return undefined when trying to remove a non-existing hero', () => {
-    const hero = { id: '3', name: 'Wonder Woman' };
+    const hero: Hero = { id: '3', name: 'Wonder Woman' };
     const heroCount = service.superHeros().length;
 
-    service.removeSuperHero(hero);
+    service.removeSuperHero(hero.id);
 
     expect(service.superHeros().length).toBe(heroCount);
   });
 
   it('should update a hero', () => {
-    const updatedHero = { id: 'c4a53232-15f2-4e8a-a681-7090b34336c2', name: 'Wolverine Updated' };
+    const updatedHero: Hero = { id: 'c4a53232-15f2-4e8a-a681-7090b34336c2', name: 'Wolverine Updated' };
 
     service.updateSuperHero(updatedHero);
 
