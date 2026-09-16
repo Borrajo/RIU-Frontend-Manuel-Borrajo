@@ -5,8 +5,9 @@ import { MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef, MatDi
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { SuperHeros } from '../services/super-heros';
-import { HeroForm } from '../interfaces/hero.interface';
+import { NewHeroForm } from '../interfaces/hero.interface';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-add-hero-dialog',
@@ -27,20 +28,21 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 export class AddHeroDialog {
     readonly dialogRef = inject(MatDialogRef<AddHeroDialog>);
     private _superHeros = inject(SuperHeros);
+    private _snackBar = inject(MatSnackBar);
     
     public isWorking = signal(false);
     public errorMessage = signal<string | null>(null);
 
-    public heroForm = new FormGroup<HeroForm>({
-        name: new FormControl('', Validators.required),
+    public heroForm = new FormGroup<NewHeroForm>({
+        name: new FormControl('', [Validators.required, Validators.pattern(/^(?!\s*$).+$/)]),
     }); 
 
     public onSubmit(): void {
       this.isWorking.set(true);
         try{
-          console.log('Adding hero with name:', this.heroForm.value.name);
-          this._superHeros.addSuperHero(this.heroForm.value.name!);
+          this._superHeros.addSuperHero(this.heroForm.value.name!.trim());
           this.dialogRef.close();
+          this._snackBar.open('Hero added successfully', 'Close');
         }
         catch(error: unknown){
           if (error instanceof Error) {

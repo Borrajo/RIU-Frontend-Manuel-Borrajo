@@ -64,7 +64,7 @@ describe('AddHeroDialog', () => {
   it('should close the dialog when the super hero is added successfully', async () => {
 
     vi.spyOn(component.dialogRef, 'close');
-    
+
     const inputElement: HTMLInputElement = fixture.nativeElement.querySelector('input');
     inputElement.value = 'Batman';
     inputElement.dispatchEvent(new Event('input'));
@@ -77,6 +77,17 @@ describe('AddHeroDialog', () => {
 
     expect(component.dialogRef.close).toHaveBeenCalled();
 
+  });
+
+  it('should be disabled form when the input contains only whitespace', () => {
+    const inputElement: HTMLInputElement = fixture.nativeElement.querySelector('input');
+    const submitButton: HTMLButtonElement = fixture.nativeElement.querySelector('button[type="submit"]');
+
+    inputElement.value = '   ';
+    inputElement.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+
+    expect(submitButton.disabled).toBe(true);
   });
 
 });
