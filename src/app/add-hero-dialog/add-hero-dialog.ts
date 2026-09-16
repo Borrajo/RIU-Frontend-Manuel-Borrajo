@@ -12,12 +12,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-add-hero-dialog',
   imports: [
-    MatDialogActions, 
-    MatDialogContent, 
-    MatDialogClose, 
-    MatDialogTitle, 
-    MatButtonModule, 
-    MatFormFieldModule, 
+    MatDialogActions,
+    MatDialogContent,
+    MatDialogClose,
+    MatDialogTitle,
+    MatButtonModule,
+    MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
     MatProgressSpinnerModule
@@ -26,33 +26,39 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrl: './add-hero-dialog.scss',
 })
 export class AddHeroDialog {
-    readonly dialogRef = inject(MatDialogRef<AddHeroDialog>);
-    private _superHeros = inject(SuperHeros);
-    private _snackBar = inject(MatSnackBar);
-    
-    public isWorking = signal(false);
-    public errorMessage = signal<string | null>(null);
+  readonly dialogRef = inject(MatDialogRef<AddHeroDialog>);
+  private _superHeros = inject(SuperHeros);
+  private _snackBar = inject(MatSnackBar);
 
-    public heroForm = new FormGroup<NewHeroForm>({
-        name: new FormControl('', [Validators.required, Validators.pattern(/^(?!\s*$).+$/)]),
-    }); 
+  public isWorking = signal(false);
+  public errorMessage = signal<string | null>(null);
 
-    public onSubmit(): void {
-      this.isWorking.set(true);
-        try{
-          this._superHeros.addSuperHero(this.heroForm.value.name!.trim());
-          this.dialogRef.close();
-          this._snackBar.open('Hero added successfully', 'Close');
-        }
-        catch(error: unknown){
-          if (error instanceof Error) {
-            this.errorMessage.set(error.message);
-          } else {
-            this.errorMessage.set('An unknown error occurred.');
-          }
-        }
-        finally{
-          this.isWorking.set(false);
-        }
+  public heroForm = new FormGroup<NewHeroForm>({
+    name: new FormControl('',
+      [
+        Validators.required,
+        Validators.pattern(/^(?!\s*$).+$/),
+        Validators.maxLength(50)
+      ]
+    ),
+  });
+
+  public onSubmit(): void {
+    this.isWorking.set(true);
+    try {
+      this._superHeros.addSuperHero(this.heroForm.value.name!.trim());
+      this.dialogRef.close();
+      this._snackBar.open('Hero added successfully', 'Close');
+    }
+    catch (error: unknown) {
+      if (error instanceof Error) {
+        this.errorMessage.set(error.message);
+      } else {
+        this.errorMessage.set('An unknown error occurred.');
       }
+    }
+    finally {
+      this.isWorking.set(false);
+    }
+  }
 }

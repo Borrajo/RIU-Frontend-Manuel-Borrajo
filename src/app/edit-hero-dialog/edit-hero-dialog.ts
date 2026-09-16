@@ -12,12 +12,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-edit-hero-dialog',
   imports: [
-    MatDialogActions, 
-    MatDialogContent, 
-    MatDialogClose, 
-    MatDialogTitle, 
-    MatButtonModule, 
-    MatFormFieldModule, 
+    MatDialogActions,
+    MatDialogContent,
+    MatDialogClose,
+    MatDialogTitle,
+    MatButtonModule,
+    MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
     MatProgressSpinnerModule
@@ -26,35 +26,40 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrl: './edit-hero-dialog.scss',
 })
 export class EditHeroDialog {
-    readonly dialogRef = inject(MatDialogRef<EditHeroDialog>);
-    private _superHeros = inject(SuperHeros);
-    private _snackBar = inject(MatSnackBar);
-    private data = inject(MAT_DIALOG_DATA);
-    
-    public isWorking = signal(false);
-    public errorMessage = signal<string | null>(null);
+  readonly dialogRef = inject(MatDialogRef<EditHeroDialog>);
+  private _superHeros = inject(SuperHeros);
+  private _snackBar = inject(MatSnackBar);
+  private data = inject(MAT_DIALOG_DATA);
 
-    public heroForm = new FormGroup<EditHeroForm>({
-        id: new FormControl(this.data.id, Validators.required),
-        name: new FormControl(this.data.name, [Validators.required, Validators.pattern(/^(?!\s*$).+$/)]),
-    }); 
+  public isWorking = signal(false);
+  public errorMessage = signal<string | null>(null);
 
-    public onSubmit(): void {
-      this.isWorking.set(true);
-        try{
-          this._superHeros.updateSuperHero(this.heroForm.value as Hero);
-          this.dialogRef.close();
-          this._snackBar.open('Hero updated successfully', 'Close');
-        }
-        catch(error: unknown){
-          if (error instanceof Error) {
-            this.errorMessage.set(error.message);
-          } else {
-            this.errorMessage.set('An unknown error occurred.');
-          }
-        }
-        finally{
-          this.isWorking.set(false);
-        }
+  public heroForm = new FormGroup<EditHeroForm>({
+    id: new FormControl(this.data.id, Validators.required),
+    name: new FormControl(this.data.name,
+      [
+        Validators.required,
+        Validators.pattern(/^(?!\s*$).+$/),
+        Validators.maxLength(50)
+      ]),
+  });
+
+  public onSubmit(): void {
+    this.isWorking.set(true);
+    try {
+      this._superHeros.updateSuperHero(this.heroForm.value as Hero);
+      this.dialogRef.close();
+      this._snackBar.open('Hero updated successfully', 'Close');
+    }
+    catch (error: unknown) {
+      if (error instanceof Error) {
+        this.errorMessage.set(error.message);
+      } else {
+        this.errorMessage.set('An unknown error occurred.');
       }
+    }
+    finally {
+      this.isWorking.set(false);
+    }
+  }
 }
