@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogActions, MatDialogContent, MatDialogClose, MatDialogTitle } from '@angular/material/dialog';
 
@@ -13,5 +13,6 @@ import { MatDialogActions, MatDialogContent, MatDialogClose, MatDialogTitle } fr
   ],
   templateUrl: './delete-hero-dialog.html',
   styleUrl: './delete-hero-dialog.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DeleteHeroDialog { }

@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { SuperHeros } from '../services/super-heros';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
@@ -25,6 +25,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   ],
   templateUrl: './heroslist.html',
   styleUrl: './heroslist.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Heroslist {
 
@@ -48,19 +49,19 @@ export class Heroslist {
 
   public displayedColumns: string[] = ['position', 'name', 'actions'];
 
-  public onPageEvent(e: PageEvent) {
+  public onPageEvent(e: PageEvent): void {
     this.pageEvent.set(e);
     this.pageSize.set(e.pageSize);
     this.pageIndex.set(e.pageIndex);
   }
 
-  public onEditHero(heroId: string) {
+  public onEditHero(heroId: string): void {
    this.dialog.open(EditHeroDialog, {
       data: this._superHeros.getSuperHeroById(heroId)
     });
   }
 
-  public onDeleteHero(heroId: string) {
+  public onDeleteHero(heroId: string): void {
     const dialogRef = this.dialog.open(DeleteHeroDialog);
     dialogRef.afterClosed().subscribe((result: boolean) => {
       if (result) {

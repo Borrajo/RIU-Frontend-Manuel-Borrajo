@@ -11,7 +11,7 @@ export class SuperHeros {
 
   public superHeros: Signal<readonly Hero[]> = this._superHeros.asReadonly();
 
-  public superHerosFiltered = computed(() => {
+  public superHerosFiltered: Signal<Hero[]> = computed(() => {
     const searchTerm = this._searchName();
     return this.superHeros().filter((hero: Hero) =>
       hero.name.toLowerCase().includes(searchTerm.toLowerCase())

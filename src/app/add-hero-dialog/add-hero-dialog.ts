@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
@@ -24,6 +24,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   ],
   templateUrl: './add-hero-dialog.html',
   styleUrl: './add-hero-dialog.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush  
 })
 export class AddHeroDialog {
   readonly dialogRef = inject(MatDialogRef<AddHeroDialog>);
