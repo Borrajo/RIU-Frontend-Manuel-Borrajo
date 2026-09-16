@@ -49,7 +49,7 @@ export class SuperHeros {
 
   public updateSuperHero(hero: Hero): void { 
     this._superHeros.update((h: readonly Hero[]) => h.map((h: Hero) => 
-      h.id === hero.id ? hero : h
+      h.id === hero.id ? { id: hero.id, name: hero.name.trim() } : h
     )); 
   };
 

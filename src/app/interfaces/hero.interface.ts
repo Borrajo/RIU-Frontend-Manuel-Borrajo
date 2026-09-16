@@ -5,6 +5,10 @@ export interface Hero {
   name: string;
 }
 
-export type HeroForm = {
+export type NewHeroForm = {
   [K in Exclude<keyof Hero, 'id'>]: FormControl<Hero[K] | null>;
+};
+
+export type EditHeroForm = {
+  [K in keyof Hero]: FormControl<Hero[K]>;
 };
