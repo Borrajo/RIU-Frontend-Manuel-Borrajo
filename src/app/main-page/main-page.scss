@@ -1,0 +1,34 @@
+:host {
+    display: grid;
+    justify-content: center;
+    width: 100%;
+    padding: 2rem;
+    box-sizing: border-box;
+    grid-template-rows: auto;
+    grid-template-columns: 1fr [center] auto 1fr;
+}
+
+.center {
+    grid-column-start: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+}
+
+app-search-bar {
+    width: 100%;
+    padding-inline: 1rem;
+    box-sizing: border-box;
+}
+
+app-heroslist {
+    min-width: 30rem;
+}
+
+app-add-hero-button {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+}

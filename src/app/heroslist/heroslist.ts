@@ -7,17 +7,21 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
+import { MatDialog } from '@angular/material/dialog';
+import { DeleteHeroDialog } from '../delete-hero-dialog/delete-hero-dialog';
+import { EditHeroDialog } from '../edit-hero-dialog/edit-hero-dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-heroslist',
   imports: [
     MatTableModule,
-     MatPaginatorModule, 
-     MatSortModule, 
-     MatMenuModule, 
-     MatButtonModule, 
-     MatIconModule,
-     MatCardModule
+    MatPaginatorModule,
+    MatSortModule,
+    MatMenuModule,
+    MatButtonModule,
+    MatIconModule,
+    MatCardModule
   ],
   templateUrl: './heroslist.html',
   styleUrl: './heroslist.scss',
@@ -28,6 +32,8 @@ export class Heroslist {
   public pageIndex = signal(0);
   public pageEvent = signal<PageEvent | undefined>(undefined);
 
+  readonly dialog = inject(MatDialog);
+  private _snackBar = inject(MatSnackBar);
   private _superHeros: SuperHeros = inject(SuperHeros);
   public superHerosList = this._superHeros.superHerosFiltered;
 
@@ -49,11 +55,18 @@ export class Heroslist {
   }
 
   public onEditHero(heroId: string) {
-    console.log('Edit hero with ID:', heroId);
+   this.dialog.open(EditHeroDialog, {
+      data: this._superHeros.getSuperHeroById(heroId)
+    });
   }
 
   public onDeleteHero(heroId: string) {
-      this._superHeros.removeSuperHero(heroId);
+    const dialogRef = this.dialog.open(DeleteHeroDialog);
+    dialogRef.afterClosed().subscribe((result: boolean) => {
+      if (result) {
+        this._superHeros.removeSuperHero(heroId);
+        this._snackBar.open('Hero deleted successfully', 'Close');
+      }
+    });
   }
-
 }
