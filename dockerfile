@@ -13,7 +13,7 @@ RUN npm ci
 # copy all files
 COPY . .
 
-RUN npm run build --configuration=production
+RUN npm run build-production
 
 # ==========================================
 # Stage 2: Production (Web Server)
