@@ -1,7 +1,7 @@
 <mat-card appearance="outlined">
     <mat-card-content>
+        @if(superHerosQty()){
         <table mat-table [dataSource]="dataSource()">
-
             <ng-container matColumnDef="position">
                 <th mat-header-cell *matHeaderCellDef> No. </th>
                 <td mat-cell *matCellDef="let index = index"> {{pageIndex() * pageSize() + index + 1}} </td>
@@ -12,15 +12,25 @@
                 <td mat-cell *matCellDef="let hero"> {{hero.name}} </td>
             </ng-container>
 
+            <ng-container matColumnDef="comesfrom">
+                <th mat-header-cell *matHeaderCellDef> Comes from </th>
+                <td mat-cell *matCellDef="let hero"> {{hero.comesFrom}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="universe">
+                <th mat-header-cell *matHeaderCellDef> Universe </th>
+                <td mat-cell *matCellDef="let hero"> {{hero.universe}} </td>
+            </ng-container>
+
             <ng-container matColumnDef="actions">
                 <th mat-header-cell *matHeaderCellDef> Actions </th>
                 <td mat-cell *matCellDef="let hero">
-                    <button mat-icon-button [matMenuTriggerFor]="actionsMenu">
+                    <button mat-icon-button [matMenuTriggerFor]="actionsMenu" aria-label="Menu actions">
                         <mat-icon>more_vert</mat-icon>
                     </button>
                     <mat-menu #actionsMenu="matMenu">
-                        <button mat-menu-item (click)="onEditHero(hero.id)">Edit</button>
-                        <button mat-menu-item (click)="onDeleteHero(hero.id)">Delete</button>
+                        <button mat-menu-item (click)="onEditHero(hero.id)" aria-label="Edit Hero">Edit</button>
+                        <button mat-menu-item (click)="onDeleteHero(hero.id)" aria-label="Delete Hero">Delete</button>
                     </mat-menu>
                 </td>
             </ng-container>
@@ -28,7 +38,15 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
-        <mat-paginator (page)="onPageEvent($event)" [length]="superHerosQty()" [pageSize]="10" aria-label="Select page">
+        <mat-paginator (page)="onPageEvent($event)" 
+        showFirstLastButtons="true"
+        [length]="superHerosQty()" 
+        [pageSize]="pageSize()"
+        [pageIndex]="pageIndex()" 
+        [pageSize]="10" aria-label="Select page">
         </mat-paginator>
+    } @else {
+        <span>No results found.</span>
+    }
     </mat-card-content>
 </mat-card>

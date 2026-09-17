@@ -1,0 +1,1 @@
+export const NO_EMPTY_REGEX = /^(?!\s*$).+$/;

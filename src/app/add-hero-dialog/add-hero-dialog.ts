@@ -1,13 +1,15 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
+import { MatButton } from '@angular/material/button';
 import { MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
+import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
 import { SuperHeros } from '../services/super-heros';
-import { NewHeroForm } from '../interfaces/hero.interface';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { Hero, NewHeroForm } from '../../shared/interfaces/hero.interface';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { NO_EMPTY_REGEX } from '../../shared/patterns';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 
 @Component({
   selector: 'app-add-hero-dialog',
@@ -16,11 +18,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     MatDialogContent,
     MatDialogClose,
     MatDialogTitle,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
+    MatButton,
+    MatFormField,
+    MatInput,
     ReactiveFormsModule,
-    MatProgressSpinnerModule
+    MatProgressSpinner,
+    MatLabel,
+    MatError,
+    CdkTextareaAutosize
   ],
   templateUrl: './add-hero-dialog.html',
   styleUrl: './add-hero-dialog.scss',
@@ -38,7 +43,35 @@ export class AddHeroDialog {
     name: new FormControl('',
       [
         Validators.required,
-        Validators.pattern(/^(?!\s*$).+$/),
+        Validators.pattern(NO_EMPTY_REGEX),
+        Validators.maxLength(50)
+      ]
+    ),
+    comesFrom: new FormControl('',
+      [
+        Validators.required,
+        Validators.pattern(NO_EMPTY_REGEX),
+        Validators.maxLength(50)
+      ]
+    ),
+    power: new FormControl('',
+      [
+        Validators.required,
+        Validators.pattern(NO_EMPTY_REGEX),
+        Validators.maxLength(200)
+      ]
+    ),
+    realName: new FormControl('',
+      [
+        Validators.required,
+        Validators.pattern(NO_EMPTY_REGEX),
+        Validators.maxLength(50)
+      ]
+    ),
+    universe: new FormControl('',
+      [
+        Validators.required,
+        Validators.pattern(NO_EMPTY_REGEX),
         Validators.maxLength(50)
       ]
     ),
@@ -47,7 +80,7 @@ export class AddHeroDialog {
   public onSubmit(): void {
     this.isWorking.set(true);
     try {
-      this._superHeros.addSuperHero(this.heroForm.value.name!.trim());
+      this._superHeros.addSuperHero(this.heroForm.value as Hero);
       this.dialogRef.close();
       this._snackBar.open('Hero added successfully', 'Close');
     }

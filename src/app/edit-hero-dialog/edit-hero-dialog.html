@@ -1,15 +1,35 @@
 <h2 mat-dialog-title>Edit Hero</h2>
 <form (ngSubmit)="onSubmit()" [formGroup]="heroForm">
-<mat-dialog-content>
-    <p>Edit the hero's details:</p>
+    <mat-dialog-content>
+        <p>Edit the hero's details:</p>
         <mat-form-field appearance="outline">
-            <input matInput placeholder="Hero Name" formControlName="name" class="input-upper" />
+            <mat-label>Hero Name</mat-label> 
+            <input matInput placeholder="Name" formControlName="name" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Real Name</mat-label> 
+            <input matInput placeholder="Real Name" formControlName="realName" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Comes from</mat-label> 
+            <input matInput placeholder="Comes From" formControlName="comesFrom" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Universe</mat-label> 
+            <input matInput placeholder="Universe" formControlName="universe" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Power</mat-label> 
+            <textarea matInput cdkTextareaAutosize
+            #autosize="cdkTextareaAutosize"
+            cdkAutosizeMinRows="1"
+            cdkAutosizeMaxRows="5" placeholder="Power" formControlName="power" ></textarea>
         </mat-form-field>
         @if (errorMessage())
         {
-            <mat-error>
-                {{errorMessage()}}
-            </mat-error>
+        <mat-error>
+            {{errorMessage()}}
+        </mat-error>
         }
     </mat-dialog-content>
     <mat-dialog-actions>
@@ -17,11 +37,11 @@
         <button matButton cdkFocusInitial type="submit" [disabled]="isWorking() || heroForm.invalid">
             @if (isWorking())
             {
-                <mat-spinner diameter="20"></mat-spinner>
+            <mat-spinner diameter="20"></mat-spinner>
             }
             @else
             {
-                Save
+            Save
             }
         </button>
     </mat-dialog-actions>

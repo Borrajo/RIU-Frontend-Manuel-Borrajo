@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { SuperHeros } from './super-heros';
-import { Hero } from '../interfaces/hero.interface';
+import { Hero } from '../../shared/interfaces/hero.interface';
 
 describe('SuperHeros', () => {
   let service: SuperHeros;
@@ -12,28 +12,36 @@ describe('SuperHeros', () => {
   });
 
   it('should add a new hero when called with a non-existing hero', () => {
-    const hero: Hero['name'] =  'Superman' ;
+    const hero: Hero =  {
+      comesFrom: 'Earth',
+      id: '00000',
+      name: 'TestMan',
+      power: 'none',
+      realName: 'Test Man',
+      universe: 'Test'
+    }
 
     service.addSuperHero(hero);
-    service.searchSuperHerosByName(hero);
+    service.searchSuperHerosByName(hero.name);
     
-    expect(service.superHerosFiltered()[0].name).toEqual(hero);
+    expect(service.superHerosFiltered()[0].name).toEqual(hero.name);
   });
 
   it('should throw an error when adding a hero with an existing name', () => {
-    const hero: Hero = { id: '1', name: 'Thor' };
+    const hero: Hero = { name: 'Thor' } as Hero;
 
-    expect(() => service.addSuperHero('Thor'))
+    expect(() => service.addSuperHero(hero))
       .toThrow('Hero with name "Thor" already exists.');
   });
 
   it('should throw an error when adding a hero with an empty name', () => {
-    expect(() => service.addSuperHero(''))
+    const emptyHero: Hero = {name: ''} as Hero;
+    expect(() => service.addSuperHero(emptyHero))
       .toThrow('Hero name cannot be empty.');
   });
 
   it('should remove an existing hero', () => {
-    const hero: Hero = { id: '3e2504e0-4f89-11d3-9a0c-0305e82c3301', name: 'Hulk' };
+    const hero: Hero = { id: '3e2504e0-4f89-11d3-9a0c-0305e82c3301', name: 'Hulk' } as Hero;
     const heroCount = service.superHeros().length;
 
     service.removeSuperHero(hero.id); 
@@ -42,7 +50,7 @@ describe('SuperHeros', () => {
   });
 
   it('should return undefined when trying to remove a non-existing hero', () => {
-    const hero: Hero = { id: '3', name: 'Wonder Woman' };
+    const hero: Hero = { id: '3', name: 'Wonder Woman' } as Hero;
     const heroCount = service.superHeros().length;
 
     service.removeSuperHero(hero.id);
@@ -51,7 +59,7 @@ describe('SuperHeros', () => {
   });
 
   it('should update a hero', () => {
-    const updatedHero: Hero = { id: 'c4a53232-15f2-4e8a-a681-7090b34336c2', name: 'Wolverine Updated' };
+    const updatedHero: Hero = { id: 'c4a53232-15f2-4e8a-a681-7090b34336c2', name: 'Wolverine Updated' } as Hero;
 
     service.updateSuperHero(updatedHero);
 

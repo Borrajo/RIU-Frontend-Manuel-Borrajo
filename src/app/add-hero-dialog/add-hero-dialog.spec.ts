@@ -65,9 +65,25 @@ describe('AddHeroDialog', () => {
 
     vi.spyOn(component.dialogRef, 'close');
 
-    const inputElement: HTMLInputElement = fixture.nativeElement.querySelector('input');
-    inputElement.value = 'Batman';
-    inputElement.dispatchEvent(new Event('input'));
+    const [inputName, inputRealName, inputFrom, inputUniverse ]: HTMLInputElement[] = fixture.nativeElement.querySelectorAll('input');
+    const inputPower: HTMLTextAreaElement = fixture.nativeElement.querySelector('textarea');
+    
+    // Fill the form to add new Hero
+    inputName.value = 'Batman';
+    inputName.dispatchEvent(new Event('input'));
+    
+    inputRealName.value = 'test man';
+    inputRealName.dispatchEvent(new Event('input'));
+    
+    inputFrom.value = 'gothic city';
+    inputFrom.dispatchEvent(new Event('input'));
+    
+    inputUniverse.value = 'DC';
+    inputUniverse.dispatchEvent(new Event('input'));
+    
+    inputPower.value = 'fly';
+    inputPower.dispatchEvent(new Event('input'));
+    
     fixture.detectChanges();
 
     const addHeroButton: HTMLButtonElement = fixture.nativeElement.querySelector('button[type="submit"]');

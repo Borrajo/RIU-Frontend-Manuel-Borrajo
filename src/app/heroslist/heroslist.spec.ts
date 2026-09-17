@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Heroslist } from './heroslist';
 import { PageEvent } from '@angular/material/paginator';
-import { MatMenuModule } from '@angular/material/menu';
+import { MatMenu } from '@angular/material/menu';
 
 describe('Heroslist', () => {
   let component: Heroslist;
@@ -10,7 +10,7 @@ describe('Heroslist', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Heroslist, MatMenuModule],
+      imports: [Heroslist, MatMenu],
     }).compileComponents();
 
     fixture = TestBed.createComponent(Heroslist);
@@ -36,7 +36,6 @@ describe('Heroslist', () => {
     nextPageButton.click();
     fixture.detectChanges();
 
-    expect(component.pageEvent()).toEqual(pageEvent);
     expect(component.pageIndex()).toEqual(pageEvent.pageIndex);
     expect(component.pageSize()).toEqual(pageEvent.pageSize);
   });

@@ -1,13 +1,15 @@
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatDialogActions, MatDialogContent, MatDialogClose, MatDialogTitle, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { SuperHeros } from '../services/super-heros';
-import { EditHeroForm, Hero } from '../interfaces/hero.interface';
+import { MatButton } from '@angular/material/button';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
+import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { EditHeroForm, Hero } from '../../shared/interfaces/hero.interface';
+import { NO_EMPTY_REGEX } from '../../shared/patterns';
+import { SuperHeros } from '../services/super-heros';
 
 @Component({
   selector: 'app-edit-hero-dialog',
@@ -16,11 +18,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     MatDialogContent,
     MatDialogClose,
     MatDialogTitle,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
+    MatButton,
+    MatFormField,
+    MatInput,
     ReactiveFormsModule,
-    MatProgressSpinnerModule
+    MatProgressSpinner,
+    MatLabel,
+    MatError,
+    CdkTextareaAutosize
   ],
   templateUrl: './edit-hero-dialog.html',
   styleUrl: './edit-hero-dialog.scss',
@@ -30,7 +35,7 @@ export class EditHeroDialog {
   readonly dialogRef = inject(MatDialogRef<EditHeroDialog>);
   private _superHeros = inject(SuperHeros);
   private _snackBar = inject(MatSnackBar);
-  private data = inject(MAT_DIALOG_DATA);
+  private data: Hero = inject(MAT_DIALOG_DATA);
 
   public isWorking = signal(false);
   public errorMessage = signal<string | null>(null);
@@ -40,9 +45,37 @@ export class EditHeroDialog {
     name: new FormControl(this.data.name,
       [
         Validators.required,
-        Validators.pattern(/^(?!\s*$).+$/),
+        Validators.pattern(NO_EMPTY_REGEX),
         Validators.maxLength(50)
       ]),
+    comesFrom: new FormControl(this.data.comesFrom,
+      [
+        Validators.required,
+        Validators.pattern(NO_EMPTY_REGEX),
+        Validators.maxLength(50)
+      ]
+    ),
+    power: new FormControl(this.data.power,
+      [
+        Validators.required,
+        Validators.pattern(NO_EMPTY_REGEX),
+        Validators.maxLength(200)
+      ]
+    ),
+    realName: new FormControl(this.data.realName,
+      [
+        Validators.required,
+        Validators.pattern(NO_EMPTY_REGEX),
+        Validators.maxLength(50)
+      ]
+    ),
+    universe: new FormControl(this.data.universe,
+      [
+        Validators.required,
+        Validators.pattern(NO_EMPTY_REGEX),
+        Validators.maxLength(50)
+      ]
+    ),
   });
 
   public onSubmit(): void {

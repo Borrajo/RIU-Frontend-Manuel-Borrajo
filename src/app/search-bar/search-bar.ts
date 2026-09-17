@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
+import { MatFormField } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
 import { SuperHeros } from '../services/super-heros';
 
 @Component({
   selector: 'app-search-bar',
-  imports: [MatInputModule, MatFormFieldModule],
+  imports: [MatInput, MatFormField],
   templateUrl: './search-bar.html',
   styleUrl: './search-bar.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

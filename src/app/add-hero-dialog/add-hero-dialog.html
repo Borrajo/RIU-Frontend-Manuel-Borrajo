@@ -3,7 +3,27 @@
 <mat-dialog-content>
     <p>Enter the hero's details:</p>
         <mat-form-field appearance="outline">
-            <input matInput placeholder="Hero Name" formControlName="name" class="input-upper" />
+            <mat-label>Name</mat-label> 
+            <input matInput placeholder="Name" formControlName="name" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Real Name</mat-label> 
+            <input matInput placeholder="Real Name" formControlName="realName" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Comes from</mat-label> 
+            <input matInput placeholder="Comes From" formControlName="comesFrom" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Universe</mat-label> 
+            <input matInput placeholder="Marvel / DC " formControlName="universe" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Power</mat-label> 
+            <textarea matInput cdkTextareaAutosize
+            #autosize="cdkTextareaAutosize"
+            cdkAutosizeMinRows="1"
+            cdkAutosizeMaxRows="5" placeholder="Power" formControlName="power" ></textarea>
         </mat-form-field>
         @if (errorMessage())
         {
